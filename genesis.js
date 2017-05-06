@@ -98,9 +98,15 @@ var spawnGeneration = function (lastGen) {
   return thisGen
 }
 
+var cataclysm = function () {
+  document.getElementById("spawn-pool").innerHTML = ""
+}
+
 var form = document.getElementById("genesis")
 form.addEventListener("submit", function (event) {
   event.preventDefault()
+  // clear last experiment
+  cataclysm()
   setGenesisConditions()
-  spawnGenerations(20) // spawn 20 generations
+  spawnGenerations(70) // spawn 20 generations
 })
