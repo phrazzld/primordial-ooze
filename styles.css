@@ -1,0 +1,21 @@
+body {
+  background-color: #fff;
+  text-align: center;
+}
+
+p {
+  margin: 0;
+}
+
+span {
+  width: 5px;
+  margin: 0;
+}
+
+.empty {
+  color: #fff;
+}
+
+#spawn {
+  margin-bottom: 20px;
+}
