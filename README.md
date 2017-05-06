@@ -1,3 +1,3 @@
 # Primordial Ooze
 
-## Cellular automata with JavaScript
+Cellular automata with JavaScript.
