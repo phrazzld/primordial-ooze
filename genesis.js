@@ -2,8 +2,6 @@
 // define genesis conditions
 // watch dumb simplicity transform into grand complexity
 
-// mvp: run rule 30 slow
-
 // define genesis conditions
 var genesisConditions = {
   "from111": false,
@@ -15,6 +13,8 @@ var genesisConditions = {
   "from001": true,
   "from000": false
 }
+
+var intervalId;
 
 // define function to write a generation of cells to a row in html
 var spawnRow = function (cells) {
@@ -56,6 +56,19 @@ var spawnGenerations = function (n) {
   }
 }
 
+// spawn a generation every n milliseconds
+var keepSpawning = function (n, max) {
+  abiogenesis()
+  intervalId = window.setInterval(spawnGen, n)
+}
+
+// variant on spawnGeneration that includes logic wrapped in spawnGenerations
+var lastGen = [true]
+var spawnGen = function () {
+  var thisGen = spawnGeneration(lastGen)
+  lastGen = thisGen
+}
+
 var idParents = function (parents) {
   var a = parents[0]
   var b = parents[1]
@@ -74,24 +87,18 @@ var idParents = function (parents) {
 
 // look at last generation to make this one
 var spawnGeneration = function (lastGen) {
-  console.log("in spawnGeneration, lastGen: " + lastGen)
   // stub thisGen
   var thisGen = []
   // pad lastGen
   lastGen.unshift(false, false)
   lastGen.push(false, false)
-  console.log("lastGen, post unshift and push: " + lastGen)
   for (var i = 0; i < lastGen.length-2; i++) {
     // id parents
     var parents = []
     parents.push(lastGen[i], lastGen[i+1], lastGen[i+2])
-    console.log("i: " + i)
-    console.log("parents: " + parents)
     var parentType = idParents(parents)
-    console.log("parentType: " + parentType)
     // push to thisGen, based on genesis conditions
     thisGen.push(genesisConditions[parentType])
-    console.log("thisGen, post-push: " + thisGen)
   }
   // display
   spawnRow(thisGen)
@@ -100,6 +107,8 @@ var spawnGeneration = function (lastGen) {
 
 var cataclysm = function () {
   document.getElementById("spawn-pool").innerHTML = ""
+  clearInterval(intervalId)
+  lastGen = [true]
 }
 
 var form = document.getElementById("genesis")
@@ -108,5 +117,9 @@ form.addEventListener("submit", function (event) {
   // clear last experiment
   cataclysm()
   setGenesisConditions()
-  spawnGenerations(70) // spawn 20 generations
+  var pace = document.getElementById("pace").value
+  keepSpawning(pace)
 })
+
+var meteor = document.getElementById("meteor")
+meteor.onclick = cataclysm

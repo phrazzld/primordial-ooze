@@ -12,6 +12,13 @@ span {
   margin: 0;
 }
 
+form {
+  text-align: left;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .empty {
   color: #fff;
 }
